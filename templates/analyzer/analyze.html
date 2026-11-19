@@ -1,0 +1,9 @@
+{% extends "base.html" %}{% block title %}New analysis · SkillGap{% endblock %}
+{% block content %}<section class="form-section"><div class="container narrow"><a class="back-link" href="{% url 'dashboard' %}">← Back to dashboard</a><div class="eyebrow dark mt-4">SKILL GAP CHECK</div><h1>Let's map your next move.</h1><p class="muted lead-small">Choose the role you want. Add your resume so we can identify the skills you already have.</p>
+<div class="form-panel"><form method="post" enctype="multipart/form-data">{% csrf_token %}
+<div class="mb-4"><label class="form-label">Your target job role</label>{{ form.target_role }}<div class="form-text">Choose the role you want to work towards.</div>{% for error in form.target_role.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}</div>
+<div class="upload-zone mb-4"><div class="upload-symbol">↑</div><label class="form-label">Upload your resume <span class="optional">OPTIONAL</span></label>{{ form.resume }}<div class="form-text">PDF only · Up to 5 MB · Text-based PDFs work best</div>{% for error in form.resume.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}</div>
+<div class="privacy-note">♢ Your resume is used to extract skills for your report. You can choose not to upload one and enter skills through a future update.</div>
+<button class="btn btn-primary btn-lg w-100 mt-4">Analyze my skill gap <span>↗</span></button></form></div>
+<div class="small muted mt-3">Analysis combines a transparent role skill profile with job descriptions returned by Remotive's public API. Job listings are remote roles and may be delayed by the provider.</div>
+</div></section>{% endblock %}

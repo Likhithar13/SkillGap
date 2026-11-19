@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}SkillGap — Find your next skill{% endblock %}
+{% block content %}
+<section class="hero">
+ <div class="container hero-grid">
+  <div class="hero-copy">
+   <div class="eyebrow"><span class="pulse"></span> CAREER INTELLIGENCE PLATFORM</div>
+   <h1>Know your gaps.<br><span>Own your next move.</span></h1>
+   <p class="hero-lead">Turn your resume into a clear learning roadmap. Compare your skills with real job-market requirements and focus on what matters next.</p>
+   <div class="d-flex flex-wrap gap-3 mt-4">
+    <a class="btn btn-primary btn-lg" href="{% url 'register' %}">Analyze my skills <span>↗</span></a>
+    <a class="btn btn-outline-light btn-lg" href="{% url 'login' %}">I have an account</a>
+   </div>
+   <div class="hero-proof"><span>✓ Resume-based insights</span><span>✓ Live job listings</span><span>✓ Personal learning plan</span></div>
+  </div>
+  <div class="hero-art">
+   <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+   <div class="floating-card card-top"><span class="mini-icon violet">✦</span><div><small>YOUR CAREER MATCH</small><strong>Skills in focus</strong></div></div>
+   <div class="analysis-card">
+    <div class="analysis-head"><div><small>SKILL OVERVIEW</small><h5>Cloud Engineer</h5></div><span class="status-dot">LIVE</span></div>
+    <div class="score-row"><div class="score">72<small>%</small></div><div><strong>Strong foundation</strong><p>Room to grow in 3 key skills</p></div></div>
+    <div class="skill-line"><div><span>AWS</span><b>80%</b></div><div class="track"><i style="width:80%"></i></div></div>
+    <div class="skill-line"><div><span>Linux</span><b>65%</b></div><div class="track"><i style="width:65%"></i></div></div>
+    <div class="skill-line"><div><span>Docker</span><b>35%</b></div><div class="track"><i class="pink" style="width:35%"></i></div></div>
+    <div class="insight"><span>✧</span> Your next step: strengthen container skills</div>
+   </div>
+   <div class="floating-card card-bottom"><span class="mini-icon green">↗</span><div><small>MARKET SIGNAL</small><strong>Real job requirements</strong></div></div>
+  </div>
+ </div>
+</section>
+<section class="section-pad">
+ <div class="container">
+  <div class="section-heading text-center"><div class="eyebrow dark">A SIMPLE, SMART WORKFLOW</div><h2>From “what should I learn?”<br>to <span>a plan you can follow.</span></h2><p>Three practical steps to turn career goals into action.</p></div>
+  <div class="row g-4 mt-3">
+   <div class="col-md-4"><div class="feature-card"><div class="feature-num">01</div><div class="feature-icon">⌕</div><h4>Upload your resume</h4><p>We read your PDF and identify skills already present in your experience.</p></div></div>
+   <div class="col-md-4"><div class="feature-card"><div class="feature-num">02</div><div class="feature-icon">◎</div><h4>Compare with real roles</h4><p>Choose a target role and compare your profile with curated role skills and live job descriptions.</p></div></div>
+   <div class="col-md-4"><div class="feature-card"><div class="feature-num">03</div><div class="feature-icon">↗</div><h4>Build your next steps</h4><p>See matched skills, missing skills, a match score and job links to explore.</p></div></div>
+  </div>
+ </div>
+</section>
+<section class="bottom-cta"><div class="container d-flex flex-wrap align-items-center justify-content-between gap-4"><div><div class="eyebrow">YOUR NEXT CHAPTER STARTS HERE</div><h2>Make your skills work for you.</h2></div><a class="btn btn-light btn-lg" href="{% url 'register' %}">Start free <span>↗</span></a></div></section>
+{% endblock %}

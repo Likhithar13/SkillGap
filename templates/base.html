@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}SkillGap — Career Intelligence{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="{% static 'css/style.css' %}" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark topbar">
+  <div class="container">
+    <a class="navbar-brand brand" href="{% url 'home' %}"><span class="brand-mark">S</span> skill<span>gap</span></a>
+    <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nav"><span class="navbar-toggler-icon"></span></button>
+    <div class="collapse navbar-collapse" id="nav">
+      <div class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+        {% if user.is_authenticated %}
+          <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
+          <a class="nav-link" href="{% url 'history' %}">My analyses</a>
+          <a class="btn btn-nav ms-lg-2" href="{% url 'analyze' %}">New analysis <span>↗</span></a>
+          <a class="nav-link ms-lg-2" href="{% url 'logout' %}">Log out</a>
+        {% else %}
+          <a class="nav-link" href="{% url 'login' %}">Log in</a>
+          <a class="btn btn-nav ms-lg-2" href="{% url 'register' %}">Get started <span>↗</span></a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</nav>
+<main>
+  <div class="container message-wrap">
+    {% for message in messages %}<div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show">{{ message }}<button class="btn-close" data-bs-dismiss="alert"></button></div>{% endfor %}
+  </div>
+  {% block content %}{% endblock %}
+</main>
+<footer class="footer"><div class="container d-flex flex-wrap justify-content-between gap-2"><span>© 2026 SkillGap · Career clarity, one skill at a time.</span><span>Job data powered by <a href="https://remotive.com" target="_blank" rel="noopener">Remotive</a>.</span></div></footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+{% block scripts %}{% endblock %}
+</body></html>

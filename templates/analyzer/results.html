@@ -1,0 +1,319 @@
+
+{% extends "base.html" %}
+
+{% block title %}Your report · SkillGap{% endblock %}
+
+{% block content %}
+<section class="results-section">
+<div class="container">
+
+    <a class="back-link" href="{% url 'dashboard' %}">← Dashboard</a>
+
+    <div class="result-heading mt-4">
+        <div>
+            <div class="eyebrow dark">YOUR SKILL GAP REPORT</div>
+            <h1>{{ analysis.target_role }}</h1>
+            <p class="muted">
+                Generated {{ analysis.created_at|date:"d M Y, h:i A" }}
+            </p>
+        </div>
+        <a class="btn btn-outline-dark" href="{% url 'analyze' %}">
+            ＋ New analysis
+        </a>
+    </div>
+
+    <!-- SKILL MATCH SCORE -->
+    <div class="row g-4 mt-1">
+
+        <div class="col-lg-4">
+            <div class="score-panel">
+                <small>SKILL MATCH SCORE</small>
+
+                <div class="big-score">
+                    {{ analysis.match_percentage }}<span>%</span>
+                </div>
+
+                <div class="score-track">
+    <i data-score="{{ analysis.match_percentage }}"></i>
+</div>
+
+                <p>
+                    {% if analysis.match_percentage >= 75 %}
+                        Strong alignment. Keep sharpening your skills.
+                    {% elif analysis.match_percentage >= 45 %}
+                        Good start. Focus on the missing skills below.
+                    {% else %}
+                        A learning opportunity. Start with the priority gaps.
+                    {% endif %}
+                </p>
+
+                <div class="score-meta">
+                    <span>{{ analysis.matched_skills|length }} matched</span>
+                    <span>{{ analysis.missing_skills|length }} to build</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- SKILL SNAPSHOT -->
+        <div class="col-lg-8">
+            <div class="result-panel">
+
+                <div class="panel-head">
+                    <div>
+                        <h4>Your skill snapshot</h4>
+                        <p>
+                            Skills detected from your resume compared with the target profile
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row g-3">
+
+                    <div class="col-sm-6">
+                        <div class="skill-group good">
+
+                            <div class="group-title">
+                                ✓ Skills you have
+                                <b>{{ analysis.matched_skills|length }}</b>
+                            </div>
+
+                            <div class="chips">
+                                {% for s in analysis.matched_skills %}
+                                    <span>{{ s }}</span>
+                                {% empty %}
+                                    <em>No matching skills detected yet.</em>
+                                {% endfor %}
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="skill-group gap">
+
+                            <div class="group-title">
+                                ↗ Skills to develop
+                                <b>{{ analysis.missing_skills|length }}</b>
+                            </div>
+
+                            <div class="chips">
+                                {% for s in analysis.missing_skills %}
+                                    <span>{{ s }}</span>
+                                {% empty %}
+                                    <em>No gaps found in this profile.</em>
+                                {% endfor %}
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- LEARNING ROADMAP WITH LEARNING LINKS -->
+
+    <div class="panel mt-4">
+
+        <div class="panel-head">
+            <div>
+                <h4>Learning roadmap</h4>
+                <p>
+                    Learn your missing skills using official resources and YouTube tutorials.
+                </p>
+            </div>
+
+            <span class="subtle-tag">
+                PERSONALIZED NEXT STEPS
+            </span>
+        </div>
+
+        {% if missing_skill_resources %}
+
+            <div class="roadmap">
+
+                {% for item in missing_skill_resources %}
+
+                    <div class="roadmap-item">
+
+                        <span class="roadmap-number">
+                            {{ forloop.counter|stringformat:"02d" }}
+                        </span>
+
+                        <div class="flex-grow-1">
+
+                            <strong>
+                                Build {{ item.skill|title }}
+                            </strong>
+
+                            <p>
+                                Study the fundamentals, complete a small hands-on
+                                exercise, and add a project to your portfolio.
+                            </p>
+
+                            <div class="d-flex flex-wrap gap-2 mt-2">
+
+                                <!-- OFFICIAL LEARNING LINK -->
+
+                                <a
+                                    href="{{ item.link }}"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="btn btn-sm btn-outline-primary"
+                                >
+                                    📘 Official Learning ↗
+                                </a>
+
+                                <!-- YOUTUBE TUTORIAL LINK -->
+
+                                <a
+                                    href="{{ item.youtube_link }}"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="btn btn-sm btn-danger"
+                                >
+                                    ▶ Watch YouTube Tutorial ↗
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                        <span class="priority">LEARN</span>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <p class="p-3">
+                Great work. Continue building projects and reviewing current job requirements.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- LIVE REMOTE JOB LISTINGS -->
+
+    <div class="panel mt-4">
+
+        <div class="panel-head">
+            <div>
+                <h4>Live remote job signals</h4>
+                <p>
+                    Real listings from Remotive matching "{{ analysis.target_role }}"
+                </p>
+            </div>
+
+            <span class="subtle-tag">
+                {{ analysis.jobs_checked }} JOBS CHECKED
+            </span>
+        </div>
+
+        {% if jobs %}
+
+            <div class="job-list">
+
+                {% for job in jobs %}
+
+                    <div class="job-item">
+
+                        <div class="company-avatar">
+                            {{ job.company_name|slice:":1"|upper }}
+                        </div>
+
+                        <div class="job-info">
+
+                            <strong>{{ job.title }}</strong>
+
+                            <span>
+                                {{ job.company_name }} ·
+                                {{ job.candidate_required_location|default:"Remote" }}
+                            </span>
+
+                            <small>
+                                {{ job.job_type|default:"Remote role" }}
+
+                                {% if job.salary %}
+                                    · {{ job.salary }}
+                                {% endif %}
+                            </small>
+
+                        </div>
+
+                        <a
+                            class="job-open"
+                            href="{{ job.url }}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            View on Remotive ↗
+                        </a>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+            <div class="api-credit">
+
+                Listings are provided by
+                <a
+                    href="https://remotive.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Remotive
+                </a>.
+
+                Each link opens the original listing.
+                Listings may be delayed by 24 hours.
+
+            </div>
+
+        {% else %}
+
+            <div class="empty-inline">
+
+                No matching live listings were returned for this role right now.
+                Your skill report is still based on the built-in role profile.
+
+                <a
+                    href="https://remotive.com/remote-jobs"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Browse Remotive jobs ↗
+                </a>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- DISCLAIMER -->
+
+    <div class="disclaimer mt-3">
+
+        Important: Resume skill detection uses keyword matching and may miss
+        skills expressed in different wording. The score is an indicative
+        learning aid, not a hiring prediction or a guarantee of job eligibility.
+        Review your report and edit your resume/profile as needed.
+
+    </div>
+
+</div>
+</section>
+
+{% endblock %}
